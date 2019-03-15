@@ -10,16 +10,44 @@ const progressBar = player.querySelector('.progress_filled');
 const toggle = player.querySelector('.toggle');
 const skipButtons = player.querySelectorAll('[data-skip]');
 const ranges = player.querySelectorAll('.slider');
-const fullScreen = player.querySelector('.fullscreen');
+const fullScreen = player.querySelector('.fullscreen'); 
 
 
-            //--------------------------Build Our Functions-----------------------------//
+//--------------------------------------------------------------------------------------------------------------------//
 
-            
+//------------------- Speed Bar on a side-----------------------//
+
+const speed = document.querySelector('.speed');
+const bar = speed.querySelector('.speed-bar');
+// here we should select video tag as well but we did it above;
+
+//make the visual part of the bar and example how to use functions inside event listeners;
+speed.addEventListener('mousemove', function(e){
+    const y = e.pageY - this.offsetTop; // this will indicate the px values from the top as 0 till the bottom of the bar max value
+    // since we cannot assume that bar is on the top of the page
+    const percent = y / this.offsetHeight; // converting th epx to the percent value;
+    const min = 0.4; // just min value you want to show on a DOM
+    const max = 4;
+    const height = Math.round(percent * 100) + '%'; // to show the percentage like 100 or 50 oercent instead of actual values;
+    // playback helps us to update the number on the bar showing the min and max when we scroll;
+    const playbackRate = percent * (max - min) + min; //this is how we indicate the number we want, this is the way not to indicate 0 to 100
+    bar.style.height = height;  // to show the height of the bar itself when over the background of the speed-bar
+    bar.textContent = playbackRate.toFixed(2) + 'x'; //toFixed helps to show 2 decimal number instead of crazy numbers
+    video.playbackRate = playbackRate; //to link it to the video itself;
+    
+});
+
+
+//--------------------------------------------------------------------------------------------------------------------//
+
+
+//--------------------------Build Our Functions-----------------------------//
+
+
 function togglePlay() {         //function to make video play/pause
     const method = video.paused ? 'play': 'pause';
     video[method]();    // or another way of the code above
-//     if(video.paused) { // there is a .paused property inside the video, there is not play property 
+//     if(video.paused) { // there is a .paused property inside the video, there is no play property 
 // video.play();
 //     }  else {
 //         video.pause();
@@ -58,7 +86,7 @@ function toggleFullScreen(){
     if(video.requestFullscreen) {
         video.requestFullscreen();
     } else {
-        toggleFullScreen=true;
+        toggleFullScreen()
     }
 }
 
